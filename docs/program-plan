@@ -1,0 +1,192 @@
+# Program Plan
+
+## 2 Minute Calm — iOS App
+
+> **Template Version:** 1.0  
+> **Last Updated:** March 2026  
+> **Status:** `Draft` | `Active` | `Completed`
+
+-----
+
+## 1. Build Phases
+
+The program is structured into 6 sequential build steps. Each step produces a committed file in the repo.
+
+|Step|Deliverable                        |File                       |Est. Time|Status|
+|----|-----------------------------------|---------------------------|---------|------|
+|1   |Data model — 3 mindfulness modes   |`ModeModel.swift`          |30 min   |⬜     |
+|2   |Home screen — mode selector UI     |`ContentView.swift`        |1 hr     |⬜     |
+|3   |Timer logic — session state machine|`SessionViewModel.swift`   |1 hr     |⬜     |
+|4   |Session screen — animation + cues  |`SessionView.swift`        |1.5 hr   |⬜     |
+|5   |Completion screen — streak counter |`CompletionView.swift`     |45 min   |⬜     |
+|6   |Daily notification — mindful nudge |`NotificationManager.swift`|30 min   |⬜     |
+
+-----
+
+## 2. File Structure
+
+```
+TwoMinuteCalm/
+├── TwoMinuteCalmApp.swift          # App entry point
+├── ContentView.swift               # Home screen (mode selector)
+├── SessionView.swift               # 2-min guided session screen
+├── CompletionView.swift            # End screen + streak display
+├── Models/
+│   └── ModeModel.swift             # Enum — 3 mindfulness modes
+├── ViewModels/
+│   └── SessionViewModel.swift      # Timer + session state logic
+└── Helpers/
+    └── NotificationManager.swift   # Daily local push notification
+```
+
+-----
+
+## 3. Step-by-Step Build Plan
+
+### Step 1 — ModeModel.swift
+
+**Goal:** Define the 3 app modes as a Swift enum with associated metadata.
+
+**Concepts covered:**
+
+- Swift enums with associated values
+- Structs and properties
+- Color and SF Symbol references in SwiftUI
+
+**Acceptance criteria:**
+
+- [ ] Enum `Calm Mode` with 3 cases: `.breathe`, `.meditate`, `.standUp`
+- [ ] Each case has: `title`, `icon`, `color`, `cueTexts: [String]`
+- [ ] File compiles without errors
+
+-----
+
+### Step 2 — ContentView.swift
+
+**Goal:** Home screen showing app name, streak badge, and 3 mode cards.
+
+**Concepts covered:**
+
+- VStack / HStack / ZStack layouts
+- NavigationStack and NavigationLink
+- ForEach with custom card views
+- `@AppStorage` for streak display
+
+**Acceptance criteria:**
+
+- [ ] 3 mode cards render with correct icon, title, and color
+- [ ] Tapping a card navigates to SessionView
+- [ ] Streak count visible on home screen
+
+-----
+
+### Step 3 — SessionViewModel.swift
+
+**Goal:** Timer logic that counts down 2 minutes and cycles through cue text phases.
+
+**Concepts covered:**
+
+- `ObservableObject` and `@Published`
+- `Timer.scheduledTimer`
+- State machine pattern (idle → running → complete)
+
+**Acceptance criteria:**
+
+- [ ] Timer counts down from 120 seconds
+- [ ] Cue text cycles every ~4 seconds based on mode
+- [ ] `isComplete` publishes `true` at 0
+
+-----
+
+### Step 4 — SessionView.swift
+
+**Goal:** Full-screen animated session with breathing circle and cue text.
+
+**Concepts covered:**
+
+- `withAnimation` and `.animation(.easeInOut)`
+- `scaleEffect` for breathing circle
+- Observing `@StateObject` / `@ObservedObject`
+- Conditional navigation on completion
+
+**Acceptance criteria:**
+
+- [ ] Circle animates expand/contract on Breathe mode
+- [ ] Cue text updates smoothly during session
+- [ ] Navigates to CompletionView when timer ends
+
+-----
+
+### Step 5 — CompletionView.swift
+
+**Goal:** End screen showing completion message, updated streak, and shareable moment.
+
+**Concepts covered:**
+
+- `@AppStorage` for persistent streak
+- Date comparison logic for streak increment
+- Basic share sheet via `ShareLink`
+
+**Acceptance criteria:**
+
+- [ ] Streak increments correctly on each daily completion
+- [ ] Completion message displayed with mode context
+- [ ] Share button functional
+
+-----
+
+### Step 6 — NotificationManager.swift
+
+**Goal:** Schedule a daily local notification at a user-friendly time.
+
+**Concepts covered:**
+
+- `UNUserNotificationCenter`
+- Requesting notification permissions
+- Scheduling repeating daily triggers
+
+**Acceptance criteria:**
+
+- [ ] Permission request shown on first launch
+- [ ] Notification fires daily at scheduled time
+- [ ] Notification body is calm and inviting
+
+-----
+
+## 4. Commit Convention
+
+Each step should be committed with a clear message:
+
+```
+feat: add ModeModel with 3 mindfulness modes
+feat: add ContentView home screen with mode cards
+feat: add SessionViewModel timer and state logic
+feat: add SessionView with breathing animation
+feat: add CompletionView with streak tracking
+feat: add NotificationManager daily reminder
+```
+
+-----
+
+## 5. Progress Tracker
+
+|Week  |Focus                                 |Target Completion|
+|------|--------------------------------------|-----------------|
+|Week 1|Steps 1–2 (Model + Home)              |*[Date]*         |
+|Week 2|Steps 3–4 (Timer + Session)           |*[Date]*         |
+|Week 3|Steps 5–6 (Completion + Notifications)|*[Date]*         |
+|Week 4|QA, polish, README update             |*[Date]*         |
+
+-----
+
+## 6. Open Items
+
+|#|Item                                         |Owner |Due Date|
+|-|---------------------------------------------|------|--------|
+|1|Confirm Swift Playgrounds setup on iPhone    |Balaji|*[Date]*|
+|2|Decide default notification time             |Balaji|*[Date]*|
+|3|Finalize color palette (soft greens / whites)|Balaji|*[Date]*|
+
+-----
+
+*Update this plan after each completed step. Log blockers in Open Items.*
